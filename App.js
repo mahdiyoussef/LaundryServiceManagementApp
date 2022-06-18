@@ -1,12 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-
-export default function App() {
+import Navigator from './src/routes/route';
+import { useFonts } from 'expo-font';
+import AppLoading from 'expo-app-loading';
+export default function App({navigation}) {
+  let [fontsLoaded] = useFonts({
+    'Taj-bold': require('./src/fonts/Tajawal-Bold.ttf'), 
+    'Taj-regular':require('./src/fonts/Tajawal-Regular.ttf')
+  });
+    if (!fontsLoaded) {
+      return <AppLoading />;
+    }
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Navigator />
   );
 }
 
