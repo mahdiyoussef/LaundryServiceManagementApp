@@ -4,6 +4,7 @@ import 'react-native-gesture-handler';
 import '../lib/firebase';
 import firebase from "firebase";
 export default function search({navigation}) {
+    const pr=navigation.getParam('pr')
     const [databons,setdatabons]=useState(null)
     const [laoddata,setloaddata]=useState(true)
     useEffect(()=>{
@@ -65,6 +66,14 @@ export default function search({navigation}) {
             return(<View></View>)
         }
     }
+    const pay=(f)=>{
+        if(f){
+            return "نعم"
+        }
+        else{
+            return "لا"
+        }
+    }
     const [typear,setypear]=useState('رقم الهاتف')
     const [typedb,settypedb]=useState('tel')
     const [opens,setopenpopups]=useState(false)
@@ -73,7 +82,7 @@ export default function search({navigation}) {
         if(!search){
             return(
                 <View>
-                    <ScrollView>
+                    <ScrollView style={{height:'95%'}}>
                     {
                     databons?.map((i)=>{
                         return(
@@ -92,7 +101,7 @@ export default function search({navigation}) {
                                     </TouchableOpacity>
                                     {/* icons8-more-details-50.png */}
                                     <TouchableOpacity onPress={()=>{
-                                        navigation.navigate('bondt',{n:i.n})
+                                        navigation.navigate('bondt',{n:i.n,pr:pr})
                                     }}>
                                         <Image source={require('../icons/icons8-more-details-32.png')}/>
                                     </TouchableOpacity>
@@ -103,12 +112,17 @@ export default function search({navigation}) {
                                 <Text style={styles.textdata}>رقم الهاتف :{i.tel}</Text>
                                 <Text style={styles.textdata}>الاجمالي :{i.total+'درهم'}</Text>
                                 <Text style={styles.textdata}>الحالة:{i.status}</Text>
+                                <Text style={styles.textdata}>مخلص:{pay(i.pay)}</Text>
+
                                 </View>
                                 
                             </View>
                         )
                     })
                 }
+                        <View style={{height:40}}>
+
+                        </View>
                     </ScrollView>
                 </View>
             )
@@ -136,7 +150,7 @@ export default function search({navigation}) {
                                     </TouchableOpacity>
                                     {/* icons8-more-details-50.png */}
                                     <TouchableOpacity onPress={()=>{
-                                        navigation.navigate('bondt',{n:i.n})
+                                        navigation.navigate('bondt',{n:i.n,pr:pr})
                                     }}>
                                         <Image source={require('../icons/icons8-more-details-32.png')}/>
                                     </TouchableOpacity>
@@ -153,6 +167,9 @@ export default function search({navigation}) {
                         )}
                     })
                 }
+                    <View style={{height:40}}>
+
+                    </View>
                     </ScrollView>
             </View>)
         }

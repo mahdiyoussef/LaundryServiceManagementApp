@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "p-m",
-    "slug": "p-m",
+    "name": "مصبنتي",
+    "slug": "massbanatimaroc",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -23,8 +23,9 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
+        "backgroundColor": "#273c75"
+      },
+      "package": "com.massbanati.app"
     },
     "web": {
       "favicon": "./assets/favicon.png"

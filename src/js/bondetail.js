@@ -7,8 +7,9 @@ export default function bondetail({navigation}) {
     const [dataitems,setdataitems]=useState(null)
     const [bon,setbon]=useState(null)
     const [load,setload]=useState(true)    
+    const pr=navigation.getParam('pr')
     const sendSms=()=>{
-        Linking.openURL(`sms:number=${bon?.tel}?body=${'مصبنة موكادور ترحب بكم رقم طلبكم هو'+bon?.n}`)
+        Linking.openURL(`sms:number=${'+212'+bon?.tel}?body=${infopr?.name+' ترحب بكم رقم طلبكم هو'+bon?.n}`)
     }
     const totalitemsp=(array)=>{
         var n=0;
@@ -17,11 +18,15 @@ export default function bondetail({navigation}) {
         })
         return n;
     }
+    const [infopr,setinfopr]=useState()
     useEffect(()=>{
-        firebase.database().ref('/pressingMogador/bon/'+navigation.getParam('n')+'/items').on('value',snapshot=>{
+        firebase.database().ref(pr+'/info').on('value',snapshot=>{
+            setinfopr(snapshot.val())
+        })
+        firebase.database().ref(pr+'/bon/'+navigation.getParam('n')+'/items').on('value',snapshot=>{
             setdataitems(snapshot.val())
         })
-        firebase.database().ref('/pressingMogador/bon/'+navigation.getParam('n')).on('value',snapshot=>{
+        firebase.database().ref(pr+'/bon/'+navigation.getParam('n')).on('value',snapshot=>{
             setbon(snapshot.val())
             setload(false)
         })

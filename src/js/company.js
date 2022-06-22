@@ -8,8 +8,9 @@ export default function Company({navigation}) {
     const [ntel,setntel]=useState('')
     const [dataentr,setdataentr]=useState(null)
     const [load,setload]=useState(true)
+    const pr=navigation.getParam('pr')
     useEffect(()=>{
-        firebase.database().ref('/pressingMogador/entr/').on('value',snapshot=>{
+        firebase.database().ref(pr+'/entr/').on('value',snapshot=>{
             if(snapshot.exists()){
                 setdataentr(snapshot.val())
             }
@@ -24,7 +25,7 @@ export default function Company({navigation}) {
             
         }
         else{
-            firebase.database().ref('/pressingMogador/entr/'+dataentr?.length).set({
+            firebase.database().ref(pr+'/entr/'+dataentr?.length).set({
                 n:dataentr?.length,
                 namecom:nameCom,
                 tel:ntel
@@ -67,7 +68,10 @@ export default function Company({navigation}) {
                 {
                     dataentr?.map((e)=>{
                         
-                        return(<View style={{
+                        return(
+                        <TouchableOpacity onPress={()=>{
+                            navigation.navigate('operationp',{pr:pr,nc:e?.n})
+                        }}><View style={{
                             borderWidth:4,
                             borderRadius:20,
                             borderColor:'#192a56',
@@ -92,7 +96,7 @@ export default function Company({navigation}) {
                                 <Text style={styles.textinfo}>الاسم :{e.namecom}</Text>
                                 <Text style={styles.textinfo}>رقم الهاتف :{e.tel}</Text>
                             </View> 
-                        </View>)
+                        </View></TouchableOpacity>)
                     })
                 }
             </ScrollView>

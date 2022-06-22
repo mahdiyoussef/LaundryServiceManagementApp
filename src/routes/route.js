@@ -10,9 +10,51 @@ import Company from "../js/company";
 import operations from "../js/operations";
 import addop from "../js/addop";
 import detailOp from "../js/detailop";
+import Facture from "../js/facture";
+import setting from "../js/setting";
+import Reg from "../js/reg";
 const screens={
-    detailop:{
+    
+    loginapp:{
+        screen:login,
+        navigationOptions:{
+            headerShown:false
+        }
+    },regp:{
+        screen:Reg,
+        navigationOptions:{
+            headerShown:false
+        }
+    }, dashb:{
+        screen:Dashboard,
+        navigationOptions:{
+            headerShown:false
+        }
+    },menup:{
+        screen:menu,navigationOptions:{
+            headerShown:false
+        }
+    }, 
+    settingp:{
+        screen:setting,
+        navigationOptions:{
+            headerShown:false
+        }
+    },companypg:{
+        screen:Company,navigationOptions:{
+            headerShown:false
+        }
+    },
+    operationp:{
+        screen:operations,navigationOptions:{
+            headerShown:false
+        }
+    },detailop:{
         screen:detailOp,navigationOptions:{
+            headerShown:false
+        }
+    },fact:{
+        screen:Facture,navigationOptions:{
             headerShown:false
         }
     },
@@ -21,22 +63,9 @@ const screens={
             headerShown:false
         }
     },
-    operationp:{
-        screen:operations,navigationOptions:{
-            headerShown:false
-        }
-    },
-    companypg:{
-        screen:Company,navigationOptions:{
-            headerShown:false
-        }
-    },
-    dashb:{
-        screen:Dashboard,
-        navigationOptions:{
-            headerShown:false
-        }
-    },searchin:{
+    
+    
+    searchin:{
         screen:search,navigationOptions:{
             headerShown:false
         }
@@ -54,17 +83,8 @@ const screens={
 
     },
     
-    loginapp:{
-        screen:login,
-        navigationOptions:{
-            headerShown:false
-        }
-    },
-     menup:{
-        screen:menu,navigationOptions:{
-            headerShown:false
-        }
-    },
+    
+     
     
     
 }

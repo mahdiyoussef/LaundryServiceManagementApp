@@ -5,14 +5,15 @@ import '../lib/firebase';
 import firebase from "firebase";
 export default function addop({navigation}) {
     const [databons,setdatabons]=useState()
-    
+    const nc=navigation.getParam('nc')
+    const pr=navigation.getParam('np')
     var today = new Date();
     var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
     const [loadds,setloadds]=useState(true)
     const [datas,setdatas]=useState(null)
     const [datai,setdatai]=useState(null)
     useEffect(()=>{
-        firebase.database().ref('/pressingMogador/entr/'+1+'/bon').on('value',snapshot=>{
+        firebase.database().ref(pr+'/entr/'+nc+'/bon').on('value',snapshot=>{
             if(snapshot.exists()){
                 setdatabons(snapshot.val())
             }
@@ -20,10 +21,10 @@ export default function addop({navigation}) {
                 setdatabons([1])
             }
         })
-        firebase.database().ref('/pressingMogador/items').on('value',snapshot=>{
+        firebase.database().ref(pr+'/items').on('value',snapshot=>{
             setdatai(snapshot.val())
         })
-        firebase.database().ref('/pressingMogador/services').on('value',snapshot=>{
+        firebase.database().ref(pr+'/services').on('value',snapshot=>{
             setdatas(snapshot.val())
             setloadds(false)
         })
@@ -57,7 +58,7 @@ export default function addop({navigation}) {
         })
         setdataitems(array)
     }
-    const [quantite,setQua]=useState()
+    const [quantite,setQua]=useState(1)
     const [prix,setprix]=useState()
     const [items,setitem]=useState('')
     const [services,setservices]=useState('')
@@ -65,14 +66,14 @@ export default function addop({navigation}) {
     const [dsize,setdsize]=useState()
     const validatebon=()=>{
         
-        firebase.database().ref('/pressingMogador/entr/'+1+'/bon/'+databons?.length).set({
+        firebase.database().ref(navigation.getParam('np')+'/entr/'+navigation.getParam('nc')+'/bon/'+databons?.length).set({
             date:date,
             total:total,
             n:databons?.length,
             status:'تحت الخدمة'
         })
         dataitems.map((i,index)=>{
-            firebase.database().ref('/pressingMogador/entr/'+1+'/bon/'+databons?.length+'/items/'+index).set({
+            firebase.database().ref(navigation.getParam('np')+'/entr/'+navigation.getParam('nc')+'/bon/'+databons?.length+'/items/'+index).set({
                 prix:i.prix,
                 items:i.items,
                 services:i.service,
@@ -83,6 +84,7 @@ export default function addop({navigation}) {
         setdataitems()
         setservices('')
         setitem('')
+        navigation.navigate('detailop',{pr:navigation.getParam('np'),nc:navigation.getParam('nc'),nb:databons?.length})
     }
     const addservicepopup=()=>{
         if(openaddservice){
@@ -96,7 +98,7 @@ export default function addop({navigation}) {
     }
     const [openaddservice,setoas]=useState(true)
     return(
-        <View>
+        <View style={{width:'100%',height:'100%'}}>
             <Text style={styles.texttitle}>اضافة بون</Text>
             
            
@@ -204,7 +206,7 @@ export default function addop({navigation}) {
                 </View>
                 
             </View>
-            <TouchableOpacity onPress={()=>{
+            <TouchableOpacity style={{position:'absolute',left:0,right:0,bottom:20}} onPress={()=>{
                 validatebon()
             }}>
                 <View style={styles.validate}>

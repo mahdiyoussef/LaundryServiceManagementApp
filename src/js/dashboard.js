@@ -5,8 +5,11 @@ import '../lib/firebase';
 import firebase from "firebase";
 import bmenu from '../icons/bmenu.svg';
 export default function Dashboard({navigation}) {
+    var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    const pr=navigation.getParam('pr')
     useEffect(()=>{
-        firebase.database().ref('/pressingMogador/bon').on('value',snapshot=>{
+        firebase.database().ref(pr+'/bon').on('value',snapshot=>{
             setdataitems(snapshot.val())
         })
         setload(false)
@@ -16,8 +19,9 @@ export default function Dashboard({navigation}) {
     const [nbon,setnbon]=useState()
     const [open,openOptionMenu]=useState(false)
     const updateStatus=()=>{
-        firebase.database().ref('/pressingMogador/bon/'+nbon).update({
-            status:'تم استلامه من طرف الزبون'
+        firebase.database().ref(pr+'/bon/'+nbon).update({
+            status:'تم استلامه من طرف الزبون',
+            pay:true
         })
     }
     const optionsMenu=()=>{
@@ -48,10 +52,20 @@ export default function Dashboard({navigation}) {
             return(<View></View>)
         }
     }
+    const pay=(f)=>{
+        if(f){
+            return "نعم"
+        }
+        else{
+            return "لا"
+        }
+    }
     return(
     <View style={styles.container}>
         <View style={{flexDirection:'row'}}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=>{
+                navigation.navigate('menup',{pr:pr})
+            }}>
                 <View style={styles.bmenu}>
                     <Image source={require('../icons/18293293931543238902-64.png')} style={{width:40,height:40}}/>
                     <Text style={styles.menutext}>القائمة</Text>
@@ -61,7 +75,7 @@ export default function Dashboard({navigation}) {
                 <Text style={{fontFamily:'Taj-regular',fontSize:16}}>مرحبا بك</Text>
                 <Text style={{fontFamily:'Taj-bold',fontSize:20}}>مصبنة موكادور</Text>
             </View>
-            <TouchableOpacity onPress={()=>navigation.navigate('addbonp')}>
+            <TouchableOpacity onPress={()=>navigation.navigate('addbonp',{pr:pr})}>
                 <View style={styles.baddb}>
                     <Image source={require('../icons/2495438061548336236-64.png')} style={{width:40,height:40}}/>
                     <Text style={styles.menutext}>اضافة بون</Text>
@@ -78,10 +92,11 @@ export default function Dashboard({navigation}) {
                 fontSize:20
             }}>البونات اليوم</Text>
             <ScrollView style={{
-                height:'67%',width:'100%',marginTop:10,
+                height:'69%',width:'100%',marginTop:10,
             }}>
                 {
                     dataitems?.map((i)=>{
+                        if(i.date==date){
                         return(
                             <View style={styles.itemboncont}>
                                 <View style={{width:'20%'}}>
@@ -98,7 +113,7 @@ export default function Dashboard({navigation}) {
                                     </TouchableOpacity>
                                     {/* icons8-more-details-50.png */}
                                     <TouchableOpacity onPress={()=>{
-                                        navigation.navigate('bondt',{n:i.n})
+                                        navigation.navigate('bondt',{n:i.n,pr:pr})
                                     }}>
                                         <Image source={require('../icons/icons8-more-details-32.png')}/>
                                     </TouchableOpacity>
@@ -109,38 +124,47 @@ export default function Dashboard({navigation}) {
                                 <Text style={styles.textdata}>رقم الهاتف :{i.tel}</Text>
                                 <Text style={styles.textdata}>الاجمالي :{i.total+'درهم'}</Text>
                                 <Text style={styles.textdata}>الحالة:{i.status}</Text>
+                                <Text style={styles.textdata}>مخلص:{pay(i.pay)}</Text>
+
                                 </View>
                                 
                             </View>
-                        )
+                        )}
                     })
                 }
             </ScrollView>
         </View>
         <View style={{
-            flexDirection:'row',borderTopColor:'#808e9b',borderTopWidth:2,padding:10
+            flexDirection:'row',borderTopColor:'#808e9b',borderTopWidth:2,padding:10,position:'absolute',
+            bottom:0,height:100,left:0,right:0
         }}>
-            <TouchableOpacity style={{width:'25%'}}>
+            <TouchableOpacity style={{width:'25%'}} onPress={()=>{
+                navigation.navigate('dashb',{pr:pr})
+            }}>
                 <View style={styles.btnmnav}>
                     <Image source={require('../icons/icons8-dashboard-64.png')} tintColor={'#808e9b'} style={{width:40,height:40}}/>
                     <Text style={styles.textNav}>لوحة القيادة</Text>
                 </View>
             </TouchableOpacity>
             <TouchableOpacity style={{width:'25%'}} onPress={()=>{
-                navigation.navigate('searchin')
+                navigation.navigate('searchin',{pr:pr})
             }}>
                 <View style={styles.btnmnav}>
                     <Image source={require('../icons/icons8-search-60.png')} tintColor={'#808e9b'} style={{width:40,height:40}}/>
                     <Text style={styles.textNav}>البحث</Text>
                 </View>
             </TouchableOpacity>
-            <TouchableOpacity style={{width:'25%'}}>
+            <TouchableOpacity style={{width:'25%'}} onPress={()=>{
+                navigation.navigate('companypg',{pr:pr})
+            }}>
                 <View style={styles.btnmnav}>
                     <Image tintColor={'#808e9b'} source={require('../icons/icons8-company-60.png')} style={{width:40,height:40}}/>
                     <Text style={styles.textNav}>صفحة المقاولات</Text>
                 </View>
             </TouchableOpacity>
-            <TouchableOpacity style={{width:'25%'}}>
+            <TouchableOpacity style={{width:'25%'}} onPress={()=>{
+                navigation.navigate('settingp',{pr:pr})
+            }}>
                 <View style={styles.btnmnav}>
                     <Image tintColor={'#808e9b'} source={require('../icons/icons8-setting-48.png')} style={{width:40,height:40}}/>
                     <Text style={styles.textNav}>الاعدادات</Text>

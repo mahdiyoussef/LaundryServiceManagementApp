@@ -3,16 +3,20 @@ import { StyleSheet,ImageBackground,Text, View,TextInput,Button,TouchableOpacity
 import 'react-native-gesture-handler';
 import '../lib/firebase';
 import firebase from "firebase";
+import CheckBox from "react-native-check-box";
 export default function addbon({navigation}) {
     const [databons,setdatabons]=useState()
-    
+    const pr=navigation.getParam('pr')
     var today = new Date();
     var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
     const [loadds,setloadds]=useState(true)
     const [datas,setdatas]=useState(null)
     const [datai,setdatai]=useState(null)
+    const [infop,setinfop]=useState()
+    const [isSelected, setSelection] = useState(false);
     useEffect(()=>{
-        firebase.database().ref('/pressingMogador/bon').on('value',snapshot=>{
+       
+        firebase.database().ref(pr+'/bon').on('value',snapshot=>{
             if(snapshot.exists()){
                 setdatabons(snapshot.val())
             }
@@ -20,10 +24,10 @@ export default function addbon({navigation}) {
                 setdatabons([1])
             }
         })
-        firebase.database().ref('/pressingMogador/items').on('value',snapshot=>{
+        firebase.database().ref(pr+'/items').on('value',snapshot=>{
             setdatai(snapshot.val())
         })
-        firebase.database().ref('/pressingMogador/services').on('value',snapshot=>{
+        firebase.database().ref(pr+'/services').on('value',snapshot=>{
             setdatas(snapshot.val())
             setloadds(false)
         })
@@ -38,7 +42,7 @@ export default function addbon({navigation}) {
             service:services
         }])
         setTotal(total+parseInt(prix)*parseInt(quantite))
-        setQua()
+        setQua(1)
         setitem('')
         setservices('')
         setitem('')
@@ -57,7 +61,7 @@ export default function addbon({navigation}) {
         })
         setdataitems(array)
     }
-    const [quantite,setQua]=useState()
+    const [quantite,setQua]=useState(1)
     const [prix,setprix]=useState()
     const [items,setitem]=useState('')
     const [services,setservices]=useState('')
@@ -65,15 +69,16 @@ export default function addbon({navigation}) {
     const [dsize,setdsize]=useState()
     const validatebon=()=>{
         
-        firebase.database().ref('/pressingMogador/bon/'+databons?.length).set({
+        firebase.database().ref(pr+'/bon/'+databons?.length).set({
             date:date,
             total:total,
             tel:phone,
             n:databons?.length,
-            status:'تحت الخدمة'
+            status:'تحت الخدمة',
+            pay:isSelected
         })
         dataitems.map((i,index)=>{
-            firebase.database().ref('/pressingMogador/bon/'+databons?.length+'/items/'+index).set({
+            firebase.database().ref(pr+'/bon/'+databons?.length+'/items/'+index).set({
                 prix:i.prix,
                 items:i.items,
                 services:i.service,
@@ -82,7 +87,7 @@ export default function addbon({navigation}) {
             })
         })
         setdataitems()
-        navigation.navigate('bondt',{n:databons?.length})
+        navigation.navigate('bondt',{n:databons?.length,pr:pr})
     }
     const addservicepopup=()=>{
         if(openaddservice){
@@ -96,7 +101,7 @@ export default function addbon({navigation}) {
     }
     const [openaddservice,setoas]=useState(true)
     return(
-        <View>
+        <View style={{width:'100%',height:'100%'}}>
             <Text style={styles.texttitle}>اضافة بون</Text>
             <View style={{alignItems:'center'}}>
                 <TextInput style={styles.inputpn} placeholder="رقم الهاتف" placeholderTextColor={'#0a3d62'} keyboardType="numeric" value={phone} onChangeText={(text)=>{
@@ -105,7 +110,9 @@ export default function addbon({navigation}) {
             </View>
            
             <View style={{alignItems:'center',marginTop:2}}>
-                <TouchableOpacity>
+                <TouchableOpacity onLongPress={()=>{
+                    navigation.navigate('settingp',{pr:pr})
+                }}>
                     <Text style={styles.textserv}>الخدمات</Text>
                 </TouchableOpacity>
             <View style={styles.spanel}>
@@ -123,8 +130,11 @@ export default function addbon({navigation}) {
                 }
             </ScrollView>
             </View></View>
+            
             <View style={{alignItems:'center',marginTop:2}}>
-                <Text style={styles.textserv}>السلعة</Text>
+                <TouchableOpacity onLongPress={()=>{
+                    navigation.navigate('settingp',{pr:pr})
+                }}><Text style={styles.textserv}>السلعة</Text></TouchableOpacity>
             <View style={styles.spanel}>
                 <ScrollView horizontal={true}>
                 {
@@ -208,7 +218,15 @@ export default function addbon({navigation}) {
                 </View>
                 
             </View>
-            <TouchableOpacity onPress={()=>{
+            <View style={{alignItems:'center',position:'absolute',bottom:80,left:0,right:0}}>
+                <View style={{flexDirection:'row'}}>
+                    <Text style={{fontFamily:'Taj-bold',fontSize:16}}>مخلص</Text>
+                    <CheckBox isChecked={isSelected} onClick={()=>{
+                        setSelection(!isSelected)
+                    }} />
+                </View>
+            </View>
+            <TouchableOpacity style={{position:'absolute',bottom:20,left:0,right:0}} onPress={()=>{
                 validatebon()
             }}>
                 <View style={styles.validate}>
