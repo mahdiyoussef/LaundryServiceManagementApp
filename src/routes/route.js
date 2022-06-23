@@ -13,10 +13,16 @@ import detailOp from "../js/detailop";
 import Facture from "../js/facture";
 import setting from "../js/setting";
 import Reg from "../js/reg";
+import stat from "../js/statistics";
 const screens={
     
     loginapp:{
         screen:login,
+        navigationOptions:{
+            headerShown:false
+        }
+    },statis:{
+        screen:stat,
         navigationOptions:{
             headerShown:false
         }

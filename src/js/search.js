@@ -17,7 +17,8 @@ export default function search({navigation}) {
     const [open,openOptionMenu]=useState(false)
     const updateStatus=()=>{
         firebase.database().ref('/pressingMogador/bon/'+nbon).update({
-            status:'تم استلامه من طرف الزبون'
+            status:'تم استلامه من طرف الزبون',
+            pay:true
         })
     }
     const [ng,setng]=useState(1)
@@ -41,7 +42,7 @@ export default function search({navigation}) {
     const optionsMenu=()=>{
         if(open){
             return(<View style={styles.optionMenuCont}>
-                <Text style={{fontFamily:'Taj-bold',padding:10,textAlign:'center',fontSize:20}}>تغيير حالة البون</Text>
+                
                 <TouchableOpacity onPress={()=>{
                     updateStatus()
                 }}>
@@ -343,10 +344,10 @@ const styles=StyleSheet.create({
     },
     optionMenuCont:{
         position:'absolute',
-        top:'30%',
+        top:'5%',
         left:'10%',
         right:'10%',
-        bottom:'40%',
+        bottom:'90%',
         backgroundColor:'white',
         borderRadius:20,
         shadowColor: "#000",
@@ -363,9 +364,9 @@ const styles=StyleSheet.create({
         alignItems:'center',
         borderRadius:10,
         backgroundColor:'#2bcbba',
-        padding:10,
-        marginLeft:10,
-        marginRight:10,
-        marginTop:20
+        padding:5,
+        marginLeft:30,
+        marginRight:30,
+        marginTop:3
     }
 })

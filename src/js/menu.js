@@ -109,6 +109,12 @@ export default function menu({navigation}) {
                 <Image source={require('../icons/icons8-company-60.png')} style={{width:32,height:32}} />
             </View>
             </TouchableOpacity>
+            <TouchableOpacity onPress={()=>navigation.navigate('statis',{pr:pr})}>
+            <View style={{flexDirection:'row',marginTop:10,alignItems:'flex-end'}}>
+                <Text style={styles.navtext}>الاحصائيات</Text>
+                <Image source={require('../icons/statistic.png')} style={{width:32,height:32}} />
+            </View>
+            </TouchableOpacity>
             <TouchableOpacity onPress={()=>navigation.navigate('settingp',{pr:pr})}>
             <View style={{flexDirection:'row',marginTop:10,alignItems:'flex-end'}}>
                 <Text style={styles.navtext}>الاعدادات</Text>
