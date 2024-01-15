@@ -1,5 +1,4 @@
 <h1>Hybrid Mobile Application for Laundry Service Management</h1>
-<b>Created by:</b> React Native , React.js , Firebase
 <h2>Overview</h2>
 <p>
 This hybrid mobile app is designed to manage laundry service for individual customers and companies, including hotels. 
